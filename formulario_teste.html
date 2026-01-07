@@ -6,12 +6,10 @@
     <title>Cadastro de Proposta - Odontoprev</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; padding: 20px; margin: 0; }
-        /* Ajuste no container principal para remover o padding interno e arredondar as bordas */
         .container { max-width: 700px; margin: 40px auto; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; }
         
-        /* NOVO: Estilo do Banner Azul do Cabeçalho */
         .header-banner {
-            background-color: #0054a6; /* Azul Odontoprev */
+            background-color: #0054a6;
             color: white;
             padding: 30px;
             text-align: center;
@@ -22,7 +20,6 @@
             font-size: 28px;
         }
         
-        /* NOVO: Área de conteúdo do formulário com padding */
         .form-content { padding: 30px; }
 
         .section { margin-bottom: 25px; }
@@ -79,7 +76,6 @@
 <script>
     let vidasCount = 0;
 
-    // Função para adicionar novo bloco de vida
     function adicionarVida() {
         vidasCount++;
         const container = document.getElementById('listaVidas');
@@ -102,7 +98,6 @@
 
     function removerVida(id) {
         const item = document.getElementById(`vida-${id}`);
-        // Pequena animação de saída antes de remover
         item.style.opacity = '0';
         item.style.transition = 'opacity 0.3s';
         setTimeout(() => {
@@ -118,7 +113,6 @@
 
         if (total < 3) {
             msgErro.style.display = 'block';
-            // Opcional: Desabilitar o botão visualmente também
             btnSubmit.style.opacity = '0.7';
             btnSubmit.style.cursor = 'not-allowed';
             return false;
@@ -135,12 +129,11 @@
         e.preventDefault();
 
         if (!validarMinimoVidas()) {
-            // Foca no erro se tentar enviar
             document.getElementById('errorVidas').scrollIntoView({behavior: "smooth"});
             return;
         }
 
-        // Montagem do JSON para o Power Automate
+        // 1. Montagem do objeto JSON
         const dados = {
             empresa: document.getElementById('empresa').value,
             cnpj: document.getElementById('cnpj').value,
@@ -158,9 +151,29 @@
         }
 
         console.log("JSON pronto para envio:", dados);
-        alert("✅ Enviado com sucesso.");
+
+        // 2. ENVIO PARA O POWER AUTOMATE (Dentro do submit)
+        const urlPowerAutomate = "https://e6134671822c4ca3ab78fae65dab51.24.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/dadd9cae74174974ad72b2e075b1ed71/triggers/manual/paths/invoke?api-version=1"; // <-- Cole aqui a URL do gatilho HTTP
+
+        fetch(urlPowerAutomate, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("✅ Proposta enviada com sucesso para o Dynamics!");
+            } else {
+                alert("❌ Erro ao enviar. Verifique o Power Automate.");
+            }
+        })
+        .catch(error => {
+            console.error('Erro na requisição:', error);
+            alert("❌ Erro de conexão com o servidor.");
+        });
     });
 
+    // Iniciar com 3 vidas vazias
     setTimeout(() => {
         for(let i=0; i<3; i++) adicionarVida();
     }, 100);
