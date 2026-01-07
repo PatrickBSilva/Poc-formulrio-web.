@@ -152,8 +152,7 @@
 
         console.log("JSON pronto para envio:", dados);
 
-        // 2. ENVIO PARA O POWER AUTOMATE (Dentro do submit)
-        const urlPowerAutomate = "https://e6134671822c4ca3ab78fae65dab51.24.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/dadd9cae74174974ad72b2e075b1ed71/triggers/manual/paths/invoke?api-version=1"; // <-- Cole aqui a URL do gatilho HTTP
+        const urlPowerAutomate = "https://e6134671822c4ca3ab78fae65dab51.24.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/dadd9cae74174974ad72b2e075b1ed71/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=D8k77aI46-7Hd9phJBuUP1hLcwGv7-omLEWGVQ8qwfk"; // <-- Cole aqui a URL do gatilho HTTP
 
         fetch(urlPowerAutomate, {
             method: 'POST',
