@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Proposta - Odontoprev</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; padding: 20px; margin: 0; }
+        /* Ajuste no container principal para remover o padding interno e arredondar as bordas */
+        .container { max-width: 700px; margin: 40px auto; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; }
+        
+        /* NOVO: Estilo do Banner Azul do Cabeçalho */
+        .header-banner {
+            background-color: #0054a6; /* Azul Odontoprev */
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header-banner h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 28px;
+        }
+        
+        /* NOVO: Área de conteúdo do formulário com padding */
+        .form-content { padding: 30px; }
+
+        .section { margin-bottom: 25px; }
+        label { display: block; margin-top: 10px; font-weight: 600; color: #555; }
+        input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        input:focus { border-color: #0054a6; outline: none; } /* Destaque azul ao clicar */
+        
+        .vida-item { background: #f8f9fa; padding: 20px; border-radius: 6px; margin-top: 15px; position: relative; border-left: 5px solid #0054a6; }
+        
+        .btn { padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 15px; transition: background-color 0.2s; }
+        .btn-add { background-color: #e9ecef; color: #0054a6; font-weight: bold; border: 2px solid #e9ecef; }
+        .btn-add:hover { background-color: #dbe2e8; border-color: #dbe2e8; }
+        .btn-submit { background-color: #0054a6; color: white; width: 100%; font-weight: bold; font-size: 18px; }
+        .btn-submit:hover { background-color: #004080; }
+        .btn-remove { background-color: transparent; color: #dc3545; font-size: 14px; padding: 5px 10px; position: absolute; top: 15px; right: 15px; border: 1px solid #dc3545; }
+        .btn-remove:hover { background-color: #dc3545; color: white; }
+        
+        .error-msg { color: #dc3545; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 4px; font-size: 14px; margin-top: 15px; display: none; }
+        h3 { color: #0054a6; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-banner">
+        <h2>Nova Proposta PME</h2>
+    </div>
+    
+    <form id="propostaForm" class="form-content">
+        <div class="section">
+            <h3>Dados da Empresa</h3>
+            <label for="empresa">Nome da Empresa *</label>
+            <input type="text" id="empresa" required placeholder="Ex: Odontoprev S.A.">
+            
+            <label for="cnpj">CNPJ *</label>
+            <input type="text" id="cnpj" required placeholder="00.000.000/0001-00">
+        </div>
+
+        <div class="section">
+            <h3>Lista de Vidas (Mínimo 3)</h3>
+            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Adicione os dados dos titulares e dependentes que farão parte do contrato.</p>
+            
+            <div id="listaVidas">
+                </div>
+            
+            <button type="button" class="btn btn-add" onclick="adicionarVida()">+ Adicionar Nova Vida</button>
+            <div id="errorVidas" class="error-msg">⚠️ Atenção: Para prosseguir, você precisa cadastrar no mínimo 3 vidas.</div>
+        </div>
+
+        <button type="submit" class="btn btn-submit">Enviar Proposta</button>
+    </form>
+</div>
+
+<script>
+    let vidasCount = 0;
+
+    // Função para adicionar novo bloco de vida
+    function adicionarVida() {
+        vidasCount++;
+        const container = document.getElementById('listaVidas');
+        
+        const div = document.createElement('div');
+        div.className = 'vida-item';
+        div.id = `vida-${vidasCount}`;
+        // Adicionado animação simples de entrada
+        div.style.animation = "fadeIn 0.5s";
+        div.innerHTML = `
+            <button type="button" class="btn btn-remove" onclick="removerVida(${vidasCount})">Remover</button>
+            <label>Nome Completo *</label>
+            <input type="text" name="nomeVida" required placeholder="Digite o nome completo">
+            <label>CPF *</label>
+            <input type="text" name="cpfVida" required placeholder="000.000.000-00">
+        `;
+        container.appendChild(div);
+        validarMinimoVidas();
+    }
+
+    function removerVida(id) {
+        const item = document.getElementById(`vida-${id}`);
+        // Pequena animação de saída antes de remover
+        item.style.opacity = '0';
+        item.style.transition = 'opacity 0.3s';
+        setTimeout(() => {
+            item.remove();
+            validarMinimoVidas();
+        }, 300);
+    }
+
+    function validarMinimoVidas() {
+        const total = document.querySelectorAll('.vida-item').length;
+        const msgErro = document.getElementById('errorVidas');
+        const btnSubmit = document.querySelector('.btn-submit');
+
+        if (total < 3) {
+            msgErro.style.display = 'block';
+            // Opcional: Desabilitar o botão visualmente também
+            btnSubmit.style.opacity = '0.7';
+            btnSubmit.style.cursor = 'not-allowed';
+            return false;
+        } else {
+            msgErro.style.display = 'none';
+            btnSubmit.style.opacity = '1';
+            btnSubmit.style.cursor = 'pointer';
+            return true;
+        }
+    }
+
+    // Intercepta o envio do formulário
+    document.getElementById('propostaForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (!validarMinimoVidas()) {
+            // Foca no erro se tentar enviar
+            document.getElementById('errorVidas').scrollIntoView({behavior: "smooth"});
+            return;
+        }
+
+        // Montagem do JSON para o Power Automate
+        const dados = {
+            empresa: document.getElementById('empresa').value,
+            cnpj: document.getElementById('cnpj').value,
+            vidas: []
+        };
+
+        const nomes = document.getElementsByName('nomeVida');
+        const cpfs = document.getElementsByName('cpfVida');
+
+        for (let i = 0; i < nomes.length; i++) {
+            dados.vidas.push({
+                nome: nomes[i].value,
+                cpf: cpfs[i].value
+            });
+        }
+
+        console.log("JSON pronto para envio:", dados);
+        alert("✅ Enviado com sucesso.");
+    });
+
+    setTimeout(() => {
+        for(let i=0; i<3; i++) adicionarVida();
+    }, 100);
+    
+</script>
+
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+</body>
+</html>
