@@ -152,9 +152,9 @@
 
         console.log("JSON pronto para envio:", dados);
 
-        const urlPowerAutomate = "https://fa-proxy-dynamics-poc-grhccjgmh7hzd2ht.brazilsouth-01.azurewebsites.net/api/EnviarPropostaProxy?code=_ZNAvWrzZmxw8Bjkyk5Z9sLLqrNAhmt3w73s85T42piZAzFuvNJl_g=="; // <-- Cole aqui a URL do gatilho HTTP
+        const urlIntegração = "https://fa-proxy-dynamics-poc-grhccjgmh7hzd2ht.brazilsouth-01.azurewebsites.net/api/EnviarPropostaProxy"; // <-- Cole aqui a URL do gatilho HTTP
 
-        fetch(urlPowerAutomate, {
+        fetch(urlIntegração, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dados)
