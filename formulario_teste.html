@@ -120,6 +120,12 @@
                     <input type="text" id="situacaoCadastral" readonly placeholder="Preenchido via Receita">
                 </div>
             </div>
+            <div class="grid-row">
+                <div>
+                    <label for="subfatura">Número da Subfatura (Automático)</label>
+                    <input type="text" id="subfatura" readonly placeholder="Aguardando CNPJ...">
+                </div>
+            </div>
         </div>
 
         <div class="section">
@@ -280,6 +286,9 @@
                 document.getElementById('descCnae').value = data.cnae_fiscal_descricao || "";
                 document.getElementById('natJuridicaCod').value = data.codigo_natureza_juridica || "";
                 document.getElementById('natJuridicaNome').value = data.natureza_juridica || "";
+
+                // MOCK DA SUBFATURA (SIMULAÇÃO +1)
+                document.getElementById('subfatura').value = "Subfatura #" + (Math.floor(Math.random() * 8) + 2);
             }
         } catch (e) { console.error("Erro CNPJ"); }
         document.getElementById('loadCnpj').style.display = 'none';
