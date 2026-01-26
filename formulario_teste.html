@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inclusão de Empresa do Grupo - Odontoprev</title>
+    <title>Formulario_exemplo</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; padding: 20px; margin: 0; }
         .container { max-width: 850px; margin: 20px auto; background: white; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); overflow: hidden; }
@@ -36,7 +36,7 @@
 
 <div class="container">
     <div class="header-banner">
-        <h2>Inclusão de Empresa do Grupo - PME</h2>
+        <h2>Formulario_exemplo</h2>
     </div>
     
     <form id="propostaForm" class="form-content">
@@ -206,7 +206,7 @@
     function mCNAE(v) { v = v.replace(/\D/g, ""); v = v.replace(/^(\d{4})(\d)/, "$1-$2"); v = v.replace(/(\d{1})(\d{2})$/, "$1/$2"); return v; }
 
     // --- LÓGICA RASCUNHO (48 HORAS) ---
-    const STORAGE_KEY = 'rascunho_odontoprev_PME_v2';
+    const STORAGE_KEY = 'rascunho';
     const EXPIRATION_TIME = 48 * 60 * 60 * 1000;
 
     function salvarProgresso() {
@@ -378,7 +378,7 @@
             dados.vidas.push({ nome: nomes[i].value, cpf: cpfs[i].value });
         }
 
-        const urlProxy = "https://fa-proxy-dynamics-poc-grhccjgmh7hzd2ht.brazilsouth-01.azurewebsites.net/api/EnviarPropostaProxy";
+        const urlProxy = "coloque seu proxy aqui"; // Exemplo: url de power automate ou outro serviço
         fetch(urlProxy, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) })
         .then(res => {
             if(res.ok) {
