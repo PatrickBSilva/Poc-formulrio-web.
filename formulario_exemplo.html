@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Corporativo Multi-Unidades</title>
+    <link rel="stylesheet" href="/css/style-base.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="header-banner">
+        <h2>Cadastro Corporativo Multi-Unidades</h2>
+    </div>
+
+    <div class="progress-bar">
+        <div id="progressFill" class="progress-fill" style="width: 33%"></div>
+    </div>
+
+    <div class="form-content">
+        <form id="propostaForm">
+            
+            <!-- Passo 0: Setup -->
+            <div class="step active" id="step0">
+                <div class="section" style="text-align: center; border-bottom: none;">
+                    <h3 style="border:none; padding:0; font-size: 22px;">Configuração Inicial</h3>
+                    <p style="font-size: 16px; margin-bottom: 20px;">Quantas unidades você deseja incluir nesta solicitação?</p>
+                    <select id="qtdUnidades" class="qtd-selector" style="max-width: 300px; margin: 0 auto; display: block; padding: 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; text-align: center;">
+                        <option value="1">1 Unidade</option>
+                        <option value="2">2 Unidades</option>
+                        <option value="3">3 Unidades</option>
+                        <option value="4">4 Unidades</option>
+                        <option value="5">5 Unidades</option>
+                    </select>
+                </div>
+                <div class="btn-group" style="justify-content: center; margin-top: 30px;">
+                    <button type="button" class="btn btn-next" onclick="iniciarPreenchimento()" style="width: 100%; max-width: 300px;">Iniciar Preenchimento</button>
+                </div>
+            </div>
+
+            <!-- Passo 1: Formulário Principal -->
+            <div class="step" id="step1">
+                <div class="alert alert-info">
+                    <strong>⚠️ Atenção:</strong> Preencha os dados de cada unidade navegando pelas abas. O formulário só poderá ser enviado quando todas as unidades e assinaturas estiverem preenchidas.
+                </div>
+                
+                <div class="unidade-tabs" id="unidadeTabsContainer"></div>
+                <div id="unidadesFormsContainer"></div>
+                
+                <div class="btn-group">
+                    <button type="button" class="btn btn-prev" onclick="mudarPagina(0)">Voltar (Alterar Quantidade)</button>
+                    <button type="button" class="btn btn-submit" id="btnFinalizar" onclick="validarEEnviar()">Finalizar e Gerar Payload</button>
+                </div>
+            </div>
+
+            <!-- Passo 2: Sucesso (Simulado) -->
+            <div class="step" id="step2">
+                <div id="screenSuccess" style="text-align: center; padding: 60px 20px;">
+                    <div class="success-icon" style="font-size: 70px; margin-bottom: 20px;">✅</div>
+                    <h2>Dados Processados com Sucesso!</h2>
+                    <p>O Payload JSON foi gerado e enviado para o console do navegador (F12).</p>
+                    <div class="code-confirmation" style="margin-top: 25px; padding: 15px; border-radius: 8px; background: #f0fdf4; border: 1px dashed #28a745; display: inline-block; font-size: 18px;">
+                        Protocolo Simulado: <strong id="confirmationCode"></strong>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script src="/js/utils.js"></script>
+</body>
+</html>
